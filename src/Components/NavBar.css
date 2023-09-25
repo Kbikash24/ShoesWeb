@@ -1,0 +1,19 @@
+.nav{
+   
+    position: relative;
+    border: 1px solid black;
+    height: 40px;
+    background-color: black;
+}
+.links{
+    display: flex;
+  gap: 20px;
+    position: absolute;
+    right: 14px;
+    top:7px;
+  
+} 
+
+.links a {
+  color: white;
+}

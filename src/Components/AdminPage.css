@@ -19,24 +19,24 @@
     background-color: #f5f5f5;
   }
   
-  .form input,
-  .form select,
-  .form button {
+  input,
+  select,
+ button {
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
   }
   
-  .form button {
-    background-color: #007bff;
+.Container button {
+    background-color: #1f2730;
     color: #fff;
     border: none;
     cursor: pointer;
   }
   
-  .form button:hover {
-    background-color: #0056b3;
+   button:hover {
+    background-color: #e7e7e7;
   }
   
   h2 {
@@ -66,7 +66,7 @@
   }
   
 
-  .sizes{
+  .size{
     display: flex;
    justify-content: space-around;
    

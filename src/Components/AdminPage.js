@@ -1,121 +1,94 @@
+// AdminPage.js
 import React, { useState } from "react";
-import "./AdminPage.css";
+import './AdminPage.css'
 
-const AdminPage = () => {
-  const [productData, setProductData] = useState({
-    productName: "",
-    description: "",
-    price: "",
-    selectedSize: "Size",
+const AdminPage = ({ addProduct}) => {
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [sizeQuantities, setSizeQuantities] = useState({
+    S: 0,
+    M: 0,
+    L: 0
   });
 
-  const [productList, setProductList] = useState([]);
-  const [sizeCounts, setSizeCounts] = useState({ L: 0, M: 0, S: 0 });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProductData({
-      ...productData,
-      [name]: value,
+  const handleSizeQuantityChange = (size, quantity) => {
+    // Debugging: Check if the event handler is being called
+    console.log(`Size: ${size}, Quantity: ${quantity}`);
+    
+    setSizeQuantities({
+      ...sizeQuantities,
+      [size]: parseInt(quantity)
     });
   };
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // Create a new product object with sizes and quantities
+    const newProduct = {
+      name: productName,
+      price: parseFloat(productPrice),
+      sizes: sizeQuantities,
+    };
 
-    const existingProductIndex = productList.findIndex(
-      (product) => product.productName === productData.productName
-    );
+    // Debugging: Check the new product object before adding it
+    console.log("New Product:", newProduct);
 
-    if (existingProductIndex !== -1) {
-      const updatedProductList = [...productList];
-      updatedProductList[existingProductIndex].selectedSize =
-        productData.selectedSize;
-      setProductList(updatedProductList);
-    } else {
-      setProductList([...productList, productData]);
-    }
+    // Call the addProduct function to add the new product
+    addProduct(newProduct);
 
-    // Update the size counts
-    const newSizeCounts = { ...sizeCounts };
-    newSizeCounts[productData.selectedSize]++;
-    setSizeCounts(newSizeCounts);
-
-    setProductData({
-      productName: "",
-      description: "",
-      price: "",
-      selectedSize: "Size",
+    // Clear input fields and reset size quantities
+    setProductName("");
+    setProductPrice("");
+    setSizeQuantities({
+      S: 0,
+      M: 0,
+      L: 0
     });
   };
 
   return (
-    <div className="container">
-      <h1>ADMIN PAGE</h1>
-      <form className="form" onSubmit={handleAddProduct}>
-        <input
-          type="text"
-          name="productName"
-          placeholder="Product Name"
-          value={productData.productName}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={productData.description}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={productData.price}
-          onChange={handleInputChange}
-        />
-        <select
-          name="selectedSize"
-          value={productData.selectedSize}
-          onChange={handleInputChange}
-        >
-          <option value="Size">Size</option>
-          <option value="L">L</option>
-          <option value="M">M</option>
-          <option value="S">S</option>
-        </select>
-        <button type="submit">Add Product</button>
-      </form>
+    <div className="Container">
+      <h2>Admin Page - Add Product</h2>
       <div>
-        <h2>Product List</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th colSpan="3">Quantity Available <tr className="sizes">
-              <th className="sz">L</th>
-              <th className="sz">M</th>
-              <th className="sz">S</th>
-            </tr></th>
-            </tr>
-            
-          </thead>
-          <tbody>
-            {productList.map((product, index) => (
-              <tr key={index}>
-                <td>{product.productName}</td>
-                <td>{product.description}</td>
-                <td>${product.price}</td>
-                <td>{sizeCounts["L"]}</td>
-                <td>{sizeCounts["M"]}</td>
-                <td>{sizeCounts["S"]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <label>Name:</label>
+        <input
+          type="text"
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
+        />
       </div>
+      <div>
+        <label>Price:</label>
+        <input
+          type="text"
+          value={productPrice}
+          onChange={(e) => setProductPrice(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Size S Quantity:</label>
+        <input
+          type="text"
+          value={sizeQuantities.S}
+          onChange={(e) => handleSizeQuantityChange('S', e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Size M Quantity:</label>
+        <input
+          type="text"
+          value={sizeQuantities.M}
+          onChange={(e) => handleSizeQuantityChange('M', e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Size L Quantity:</label>
+        <input
+          type="text"
+          value={sizeQuantities.L}
+          onChange={(e) => handleSizeQuantityChange('L', e.target.value)}
+        />
+      </div>
+      <button onClick={handleSubmit}>Add Product</button>
     </div>
   );
 };
